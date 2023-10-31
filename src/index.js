@@ -1,7 +1,5 @@
-import { Game } from './game/Game'
-
-const game = Game()
+import { container } from './container'
 
 window.addEventListener('DOMContentLoaded', () => {
-  game.init()
+  container.cradle.game.init()
 })

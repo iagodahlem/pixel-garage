@@ -1,9 +1,12 @@
-export const Game = () => {
+export const Game = ({ canvas, pointer, level }) => {
   let previousTime = 0
 
   const init = () => {
     previousTime = Date.now()
+
+    pointer.init()
     canvas.init()
+    level.init()
 
     run()
   }
@@ -13,34 +16,10 @@ export const Game = () => {
     time = (currentTime - previousTime) / 1000
     previousTime = currentTime
 
+    level.run()
+
     requestAnimationFrame(run)
   }
 
   return { init }
 }
-
-export const Canvas = () => {
-  let canvas
-  let context
-
-  const init = () => {
-    canvas = document.getElementById('canvas')
-    context = canvas.getContext('2d')
-
-    setScreenSize()
-  }
-
-  const setScreenSize = () => {
-    const width = window.innerWidth
-    const height = window.innerHeight
-
-    canvas.width = width
-    canvas.height = height
-  }
-
-  return {
-    init,
-  }
-}
-
-export const canvas = Canvas()
