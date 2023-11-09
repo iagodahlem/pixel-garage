@@ -1,4 +1,5 @@
 export const Game = ({ canvas, controls, pointer, level }) => {
+  let time = 0
   let previousTime = 0
 
   const init = () => {
