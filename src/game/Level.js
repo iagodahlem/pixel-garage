@@ -17,8 +17,23 @@ export const Level = ({ canvas, controls }) => {
 }
 
 const Spaceship = ({ canvas, controls }) => {
-  const acceleration = 6
-  const position = { x: 0, y: 0, rotation: 0 }
+  const acceleration = 0.8
+  const decceleration = 0.05
+  const rotationSpeed = 5
+  const maxSpeed = 10
+
+  const position = {
+    x: 0,
+    y: 0,
+    rotation: 0,
+    facingX: 0,
+    facingY: 0,
+    movingX: 0,
+    movingY: 0,
+    angle: 0,
+    speed: 0,
+  }
+
   let isAccelerating = false
 
   const pixelSize = 3
@@ -33,7 +48,7 @@ const Spaceship = ({ canvas, controls }) => {
 
     grid = Array.from(Array(gridSize), () => Array(gridSize).fill(0)).map(
       (row, rowIndex) =>
-        row.map((column, columnIndex) => ({
+        row.map((_, columnIndex) => ({
           x: columnIndex * pixelSize + (position.x - totalSize / 2),
           y: rowIndex * pixelSize + (position.y - totalSize / 2),
         }))
@@ -41,41 +56,60 @@ const Spaceship = ({ canvas, controls }) => {
   }
 
   const run = () => {
-    const { up, right, down, left } = controls
+    const { up, right, left } = controls
 
     isAccelerating = up() ? true : false
 
     switch (true) {
-      case up():
-        position.y -= acceleration
+      case right():
+        position.rotation += rotationSpeed
         break
-      case down():
-        position.y += acceleration
+      case left():
+        position.rotation -= rotationSpeed
         break
       default:
         break
     }
 
-    switch (true) {
-      case right():
-        position.rotation -= 1
-        break
-      case left():
-        position.rotation += 1
-        break
-      default:
-        break
+    position.angle = (position.rotation * Math.PI) / 180
+
+    if (isAccelerating) {
+      position.facingX = Math.cos(position.angle)
+      position.facingY = Math.sin(position.angle)
+
+      const movingX = position.movingX + acceleration * position.facingY
+      const movingY = position.movingY + acceleration * -position.facingX
+
+      position.speed = Math.sqrt(movingX * movingX + movingY * movingY)
+
+      if (position.speed < maxSpeed) {
+        position.movingX = movingX
+        position.movingY = movingY
+      }
+    } else {
+      position.movingX = position.movingX - decceleration * position.movingX
+      position.movingY = position.movingY - decceleration * position.movingY
     }
+
+    position.x += position.movingX
+    position.y += position.movingY
+
+    console.log({ movingX: position.movingX, movingY: position.movingY })
 
     grid = Array.from(Array(gridSize), () => Array(gridSize).fill(0)).map(
       (row, rowIndex) =>
-        row.map((column, columnIndex) => ({
+        row.map((_, columnIndex) => ({
           x: columnIndex * pixelSize + (position.x - totalSize / 2),
           y: rowIndex * pixelSize + (position.y - totalSize / 2),
         }))
     )
 
     canvas.erase()
+
+    canvas.context().save()
+    canvas.context().translate(grid[6][6].x, grid[6][6].y)
+    canvas.context().rotate(position.angle)
+    canvas.context().translate(-grid[6][6].x, -grid[6][6].y)
 
     drawPixel(grid[0][6].x, grid[0][6].y, '#BFBCEE')
 
@@ -169,12 +203,16 @@ const Spaceship = ({ canvas, controls }) => {
 
       drawPixel(grid[12][6].x, grid[12][6].y, '#340A5E')
     }
+
+    canvas.context().restore()
   }
 
   const drawPixel = (x, y, color) => {
     canvas.drawRect(x, y, pixelSize, pixelSize, {
       fillStyle: color,
+      strokeStyle: color,
     })
+    canvas.context().stroke()
   }
 
   return {
