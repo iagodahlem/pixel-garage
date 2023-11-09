@@ -1,11 +1,12 @@
-export const Game = ({ canvas, pointer, level }) => {
+export const Game = ({ canvas, controls, pointer, level }) => {
   let previousTime = 0
 
   const init = () => {
     previousTime = Date.now()
 
-    pointer.init()
     canvas.init()
+    controls.init()
+    pointer.init()
     level.init()
 
     run()

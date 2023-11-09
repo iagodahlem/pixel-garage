@@ -37,10 +37,16 @@ export const Canvas = () => {
     context.fill()
   }
 
+  const erase = () => {
+    drawRect(0, 0, window.innerWidth, window.innerHeight, {
+      fillStyle: 'black',
+    })
+  }
+
   return {
     init,
-    canvas,
-    context,
+    context: () => context,
+    erase,
     drawCircle,
     drawRect,
   }
