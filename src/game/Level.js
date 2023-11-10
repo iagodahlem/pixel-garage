@@ -1,9 +1,10 @@
-export const Level = ({ canvas, controls, spaceship }) => {
+export const Level = ({ canvas, spaceship }) => {
   const init = () => {
     spaceship.init()
   }
 
   const run = () => {
+    canvas.erase()
     spaceship.run()
   }
 

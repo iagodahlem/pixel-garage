@@ -4,7 +4,7 @@ import { Grid } from '../../_shared/Grid'
 export const Spaceship = ({ canvas, controls }) => {
   const acceleration = 0.5
   const deceleration = 0.06
-  const rotationSpeed = 5
+  const rotationSpeed = 4
   const maxSpeed = 10
 
   const position = {
@@ -51,7 +51,7 @@ export const Spaceship = ({ canvas, controls }) => {
   }
 
   const calculateRotation = () => {
-    const { up, right, left } = controls
+    const { right, left } = controls
 
     switch (true) {
       case right():
@@ -105,7 +105,6 @@ export const Spaceship = ({ canvas, controls }) => {
   }
 
   const draw = () => {
-    canvas.erase()
     canvas.context().save()
 
     rotateShip()
