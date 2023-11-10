@@ -28,8 +28,6 @@ export const Spaceship = ({ canvas, controls }) => {
     position.y = window.innerHeight / 2
 
     calculateGrid()
-
-    console.log(spaceShipGrid)
   }
 
   const run = () => {
@@ -39,10 +37,7 @@ export const Spaceship = ({ canvas, controls }) => {
 
     calculateRotation()
     calculateMovement()
-
-    position.x += position.movingX
-    position.y += position.movingY
-
+    calculatePosition()
     calculateGrid()
 
     draw()
@@ -53,6 +48,23 @@ export const Spaceship = ({ canvas, controls }) => {
       x: position.x,
       y: position.y,
     })
+  }
+
+  const calculateRotation = () => {
+    const { up, right, left } = controls
+
+    switch (true) {
+      case right():
+        position.rotation += rotationSpeed
+        break
+      case left():
+        position.rotation -= rotationSpeed
+        break
+      default:
+        break
+    }
+
+    position.angle = (position.rotation * Math.PI) / 180
   }
 
   const calculateMovement = () => {
@@ -75,21 +87,21 @@ export const Spaceship = ({ canvas, controls }) => {
     }
   }
 
-  const calculateRotation = () => {
-    const { up, right, left } = controls
+  const calculatePosition = () => {
+    position.x += position.movingX
+    position.y += position.movingY
 
-    switch (true) {
-      case right():
-        position.rotation += rotationSpeed
-        break
-      case left():
-        position.rotation -= rotationSpeed
-        break
-      default:
-        break
+    if (position.x > canvas.width()) {
+      position.x = 0
+    } else if (position.y < 0) {
+      position.y = canvas.height()
     }
 
-    position.angle = (position.rotation * Math.PI) / 180
+    if (position.y > canvas.height()) {
+      position.y = 0
+    } else if (position.x < 0) {
+      position.x = canvas.width()
+    }
   }
 
   const draw = () => {

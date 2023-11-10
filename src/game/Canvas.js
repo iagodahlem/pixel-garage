@@ -49,5 +49,7 @@ export const Canvas = () => {
     erase,
     drawCircle,
     drawRect,
+    width: () => canvas.width,
+    height: () => canvas.height,
   }
 }
