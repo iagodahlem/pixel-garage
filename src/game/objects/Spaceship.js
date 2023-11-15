@@ -3,7 +3,7 @@ import { Grid } from '../../_shared/Grid'
 
 export const Spaceship = ({ canvas, controls }) => {
   const acceleration = 0.5
-  const deceleration = 0.06
+  const deceleration = 0.05
   const rotationSpeed = 4
   const maxSpeed = 10
 
@@ -20,6 +20,7 @@ export const Spaceship = ({ canvas, controls }) => {
   }
 
   let isAccelerating = false
+  let isRotating = false
 
   let spaceShipGrid
 
@@ -31,9 +32,10 @@ export const Spaceship = ({ canvas, controls }) => {
   }
 
   const run = () => {
-    const { up } = controls
+    const { up, right, left } = controls
 
-    isAccelerating = up() ? true : false
+    isAccelerating = up()
+    isRotating = right() || left()
 
     calculateRotation()
     calculateMovement()
@@ -53,25 +55,29 @@ export const Spaceship = ({ canvas, controls }) => {
   const calculateRotation = () => {
     const { right, left } = controls
 
-    switch (true) {
-      case right():
-        position.rotation += rotationSpeed
-        break
-      case left():
-        position.rotation -= rotationSpeed
-        break
-      default:
-        break
-    }
+    if (isRotating) {
+      switch (true) {
+        case right():
+          position.rotation += rotationSpeed
+          break
+        case left():
+          position.rotation -= rotationSpeed
+          break
+        default:
+          break
+      }
 
-    position.angle = (position.rotation * Math.PI) / 180
+      position.angle = (position.rotation * Math.PI) / 180
+    }
   }
 
   const calculateMovement = () => {
-    if (isAccelerating) {
-      position.facingX = Math.cos(position.angle)
-      position.facingY = Math.sin(position.angle)
+    position.facingX = Math.cos(position.angle)
+    position.facingY = Math.sin(position.angle)
 
+    console.log({ movingY: position.movingY, movingX: position.movingX })
+
+    if (isAccelerating) {
       const movingX = position.movingX + acceleration * position.facingY
       const movingY = position.movingY + acceleration * -position.facingX
 
@@ -82,8 +88,13 @@ export const Spaceship = ({ canvas, controls }) => {
         position.movingY = movingY
       }
     } else {
-      position.movingX = position.movingX - deceleration * position.movingX
-      position.movingY = position.movingY - deceleration * position.movingY
+      if (position.movementX !== 0) {
+        position.movingX = position.movingX - deceleration * position.movingX
+      }
+
+      if (position.movementY !== 0) {
+        position.movingY = position.movingY - deceleration * position.movingY
+      }
     }
   }
 
