@@ -1,11 +1,10 @@
-export const Level = ({ canvas, spaceship, car }) => {
+export const CarLevel = ({ canvas, car }) => {
   const init = () => {
-    spaceship.init()
     car.init()
   }
 
   const run = () => {
-    canvas.erase()
+    canvas.erase({ fillStyle: 'gray' })
     car.run()
   }
 

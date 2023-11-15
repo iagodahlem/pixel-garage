@@ -37,9 +37,10 @@ export const Canvas = () => {
     context.fill()
   }
 
-  const erase = () => {
+  const erase = (options = {}) => {
     drawRect(0, 0, window.innerWidth, window.innerHeight, {
-      fillStyle: 'gray',
+      fillStyle: '#ffffff',
+      ...options,
     })
   }
 
