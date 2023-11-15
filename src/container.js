@@ -8,6 +8,7 @@ import { Pointer } from './game/Pointer'
 import { Menu } from './game/levels/Menu'
 import { Star } from './game/objects/Star'
 import { Spaceship } from './game/objects/Spaceship'
+import { Car } from './game/objects/Car'
 
 const container = createContainer()
 
@@ -20,6 +21,7 @@ container.register({
   menu: asFunction(Menu),
   star: asFunction(Star).singleton(),
   spaceship: asFunction(Spaceship).singleton(),
+  car: asFunction(Car).singleton(),
 })
 
 export { container }

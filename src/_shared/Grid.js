@@ -1,15 +1,18 @@
 import { pixelSize } from './config'
 
-export const Grid = ({ gridSize, size = pixelSize }) => {
-  const totalSize = size * gridSize
+export const Grid = ({ size = pixelSize, ...options }) => {
+  const xSize = options.xSize || options.gridSize
+  const ySize = options.ySize || options.gridSize
+
+  const totalXSize = size * xSize
+  const totalYSize = size * ySize
 
   const createMatrix = ({ x, y }) =>
-    Array.from(Array(gridSize), () => Array(gridSize).fill(0)).map(
-      (row, rowIndex) =>
-        row.map((_, columnIndex) => ({
-          x: columnIndex * size + (x - totalSize / 2),
-          y: rowIndex * size + (y - totalSize / 2),
-        }))
+    Array.from(Array(ySize), () => Array(xSize).fill(0)).map((row, rowIndex) =>
+      row.map((_, columnIndex) => ({
+        x: columnIndex * size + (x - totalXSize / 2),
+        y: rowIndex * size + (y - totalYSize / 2),
+      }))
     )
 
   return {

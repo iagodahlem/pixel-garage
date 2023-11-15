@@ -39,7 +39,7 @@ export const Canvas = () => {
 
   const erase = () => {
     drawRect(0, 0, window.innerWidth, window.innerHeight, {
-      fillStyle: 'black',
+      fillStyle: 'gray',
     })
   }
 

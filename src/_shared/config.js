@@ -1,1 +1,1 @@
-export const pixelSize = 3
+export const pixelSize = 5

@@ -1,11 +1,12 @@
-export const Level = ({ canvas, spaceship }) => {
+export const Level = ({ canvas, spaceship, car }) => {
   const init = () => {
     spaceship.init()
+    car.init()
   }
 
   const run = () => {
     canvas.erase()
-    spaceship.run()
+    car.run()
   }
 
   return {

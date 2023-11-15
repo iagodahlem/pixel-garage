@@ -75,8 +75,6 @@ export const Spaceship = ({ canvas, controls }) => {
     position.facingX = Math.cos(position.angle)
     position.facingY = Math.sin(position.angle)
 
-    console.log({ movingY: position.movingY, movingX: position.movingX })
-
     if (isAccelerating) {
       const movingX = position.movingX + acceleration * position.facingY
       const movingY = position.movingY + acceleration * -position.facingX
