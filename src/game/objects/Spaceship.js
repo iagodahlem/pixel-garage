@@ -86,11 +86,11 @@ export const Spaceship = ({ canvas, controls }) => {
         position.movingY = movingY
       }
     } else {
-      if (position.movementX !== 0) {
+      if (position.movingX !== 0) {
         position.movingX = position.movingX - deceleration * position.movingX
       }
 
-      if (position.movementY !== 0) {
+      if (position.movingY !== 0) {
         position.movingY = position.movingY - deceleration * position.movingY
       }
     }

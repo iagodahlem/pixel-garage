@@ -2,8 +2,8 @@ import { pixelSize } from '../../_shared/config'
 import { Grid } from '../../_shared/Grid'
 
 export const Car = ({ canvas, controls }) => {
-  const acceleration = 0.5
-  const deceleration = 0.05
+  const acceleration = 0.2
+  const deceleration = 0.075
   const rotationSpeed = 2
   const maxSpeed = 5
   const steeringAcceleration = 0.03
@@ -23,6 +23,7 @@ export const Car = ({ canvas, controls }) => {
   }
 
   let isAccelerating = false
+  let isBreaking = false
   let isSteering = false
   let isSteeringLeft = false
   let isSteeringRight = false
@@ -37,13 +38,15 @@ export const Car = ({ canvas, controls }) => {
   }
 
   const run = () => {
-    const { up, right, left } = controls
+    const { up, right, down, left } = controls
 
     isAccelerating = up()
+    isBreaking = down()
     isSteeringLeft = left()
     isSteeringRight = right()
     isSteering = isSteeringLeft || isSteeringRight
 
+    calculateSpeed()
     calculateRotation()
     calculateMovement()
     calculatePosition()
@@ -62,19 +65,25 @@ export const Car = ({ canvas, controls }) => {
   const calculateRotation = () => {
     const { right, left } = controls
 
-    if (isSteering && isAccelerating) {
+    if ((isSteering && position.speed >= 0.75) || position.speed <= -0.75) {
       switch (true) {
         case right():
-          position.rotation += rotationSpeed
+          position.rotation =
+            position.speed < 0
+              ? position.rotation - rotationSpeed
+              : position.rotation + rotationSpeed
           break
         case left():
-          position.rotation -= rotationSpeed
+          position.rotation =
+            position.speed < 0
+              ? position.rotation + rotationSpeed
+              : position.rotation - rotationSpeed
           break
         default:
           break
       }
 
-      position.angle = (position.rotation * Math.PI) / 180
+      position.angle = position.rotation * (Math.PI / 180)
     }
 
     if (isSteeringLeft) {
@@ -94,33 +103,79 @@ export const Car = ({ canvas, controls }) => {
         position.steeringAngle += steeringAcceleration
       }
 
-      // position.steeringAngle = 0
+      position.steeringAngle = 0
+    }
+  }
+
+  const calculateSpeed = () => {
+    // throttle
+    if (isAccelerating) {
+      position.speed += acceleration
+
+      if (position.speed > maxSpeed) {
+        position.speed = maxSpeed
+      }
+
+      // reverse
+    } else if (isBreaking && position.speed <= 0) {
+      position.speed -= acceleration
+
+      if (position.speed < -(maxSpeed / 2)) {
+        position.speed = -(maxSpeed / 2)
+      }
+    } else {
+      // breaking
+      if (isBreaking && position.speed > 0) {
+        position.speed -= deceleration + 0.25
+
+        if (position.speed < 0) {
+          position.speed = 0
+        }
+
+        // deceleration
+      } else {
+        if (position.speed > 0) {
+          position.speed -= deceleration
+
+          if (position.speed < 0) {
+            position.speed = 0
+          }
+        } else if (position.speed < 0) {
+          position.speed += deceleration
+
+          if (position.speed > 0) {
+            position.speed = 0
+          }
+        }
+      }
     }
   }
 
   const calculateMovement = () => {
-    position.facingX = Math.cos(position.angle)
-    position.facingY = Math.sin(position.angle)
+    position.facingX = Math.round(Math.sin(position.angle) * 1000) / 1000
+    position.facingY = Math.round(Math.cos(position.angle) * 1000) / 1000
 
-    if (isAccelerating) {
-      const movingX = position.movingX + acceleration * position.facingY
-      const movingY = position.movingY + acceleration * -position.facingX
+    const positionX = position.speed * position.facingX
+    const positionY = position.speed * -position.facingY
 
-      position.speed = Math.sqrt(movingX * movingX + movingY * movingY)
+    position.movingX = positionX
+    position.movingY = positionY
 
-      if (position.speed < maxSpeed) {
-        position.movingX = movingX
-        position.movingY = movingY
-      }
-    } else {
-      if (position.movementX !== 0) {
-        position.movingX = position.movingX - deceleration * position.movingX
-      }
+    // if (position.speed <= 3) {
+    //   position.movingX = positionX
+    //   position.movingY = positionY
+    // } else if (position.speed > 4 && position.speed <= maxSpeed) {
+    //   position.movingX += positionX
+    //   position.movingY += positionY
+    // } else {
+    //   position.movingX = position.movingX
+    //   position.movingY = position.movingY
+    // }
 
-      if (position.movementY !== 0) {
-        position.movingY = position.movingY - deceleration * position.movingY
-      }
-    }
+    console.log({
+      speed: position.speed,
+      movingX: position.movingX,
+    })
   }
 
   const calculatePosition = () => {
