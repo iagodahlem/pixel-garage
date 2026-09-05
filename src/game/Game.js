@@ -8,29 +8,37 @@ export const Game = ({
   let time = 0
   let previousTime = 0
   let level
+  let levelName
 
   const levelsMap = {
-    carLevel,
-    spaceshipLevel,
+    car: carLevel,
+    spaceship: spaceshipLevel,
+  }
+
+  const levelAliases = {
+    car: 'car',
+    carLevel: 'car',
+    spaceship: 'spaceship',
+    spaceshipLevel: 'spaceship',
   }
 
   const init = () => {
     previousTime = Date.now()
 
-    const query = new URLSearchParams(window.location.search)
-
-    level = levelsMap[query.get('level')]
-
-    if (!level) {
-      throw new Error(`Level ${query.get('level')} not found`)
-    }
-
     canvas.init()
     controls.init()
     pointer.init()
-    level.init()
+
+    const query = new URLSearchParams(window.location.search)
+    switchLevel(query.get('level'))
 
     run()
+  }
+
+  const switchLevel = (name) => {
+    levelName = levelAliases[name] || 'spaceship'
+    level = levelsMap[levelName]
+    level.init()
   }
 
   const run = () => {
@@ -43,5 +51,9 @@ export const Game = ({
     requestAnimationFrame(run)
   }
 
-  return { init }
+  return {
+    init,
+    switchLevel,
+    currentLevel: () => levelName,
+  }
 }

@@ -17,6 +17,5 @@ export const Grid = ({ size = pixelSize, ...options }) => {
 
   return {
     matrix: createMatrix,
-    totalSize: () => totalSize,
   }
 }
