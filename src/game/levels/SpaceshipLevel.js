@@ -11,13 +11,17 @@ const starFractions = [
 
 export const SpaceshipLevel = ({ canvas, spaceship }) => {
   let starfield
+  let resizeBound = false
 
   const init = () => {
     spaceship.init()
 
     buildStarfield()
 
-    window.addEventListener('resize', buildStarfield)
+    if (!resizeBound) {
+      window.addEventListener('resize', buildStarfield)
+      resizeBound = true
+    }
   }
 
   const buildStarfield = () => {
