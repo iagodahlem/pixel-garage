@@ -10,21 +10,29 @@ const starFractions = [
 ]
 
 export const SpaceshipLevel = ({ canvas, spaceship }) => {
-  let stars
+  let starfield
 
   const init = () => {
     spaceship.init()
 
-    stars = starFractions.map(({ x, y }) => {
-      const star = Star({ canvas })
+    buildStarfield()
+
+    window.addEventListener('resize', buildStarfield)
+  }
+
+  const buildStarfield = () => {
+    starfield = canvas.createLayer()
+
+    starFractions.forEach(({ x, y }) => {
+      const star = Star({ canvas: starfield })
       star.init({ x: x * canvas.width(), y: y * canvas.height() })
-      return star
+      star.run()
     })
   }
 
   const run = () => {
     canvas.erase({ fillStyle: 'black' })
-    stars.forEach((star) => star.run())
+    canvas.context().drawImage(starfield.element(), 0, 0)
     spaceship.run()
   }
 

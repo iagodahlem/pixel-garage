@@ -44,12 +44,38 @@ export const Canvas = () => {
     })
   }
 
+  const createLayer = () => {
+    const layerCanvas = document.createElement('canvas')
+    layerCanvas.width = canvas.width
+    layerCanvas.height = canvas.height
+
+    const layerContext = layerCanvas.getContext('2d')
+
+    const layerDrawRect = (x, y, w, h, options = {}) => {
+      Object.assign(layerContext, options)
+
+      layerContext.beginPath()
+      layerContext.rect(x, y, w, h)
+      layerContext.closePath()
+      layerContext.fill()
+    }
+
+    return {
+      context: () => layerContext,
+      drawRect: layerDrawRect,
+      width: () => layerCanvas.width,
+      height: () => layerCanvas.height,
+      element: () => layerCanvas,
+    }
+  }
+
   return {
     init,
     context: () => context,
     erase,
     drawCircle,
     drawRect,
+    createLayer,
     width: () => canvas.width,
     height: () => canvas.height,
   }
