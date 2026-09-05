@@ -1,6 +1,8 @@
 # Pixel Garage
 
-This is a small canvas playground I built in 2023, with two pixel-art vehicles, a spaceship and a car, drawn pixel by pixel on a grid. It is the prototype Pixel Drift grew out of.
+This is a small canvas playground I built in 2023, with two pixel-art vehicles, a spaceship and a car, drawn pixel by pixel on a grid.
+
+Live at [pixel-garage.iagodahlem.com](https://pixel-garage.iagodahlem.com).
 
 ## Controls
 
@@ -18,8 +20,8 @@ Needs Node 22 or newer.
 
 ## Deploy
 
-The site is deployed on Netlify from `main`.
+Deployed on Netlify from `main` to [pixel-garage.iagodahlem.com](https://pixel-garage.iagodahlem.com).
 
 ## License
 
-MIT
+[MIT License](http://iagodahlem.mit-license.org/) © Iago Dahlem
