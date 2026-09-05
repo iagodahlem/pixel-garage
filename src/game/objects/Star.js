@@ -15,9 +15,9 @@ export const Star = ({ canvas }) => {
 
   let starGrid
 
-  const init = () => {
-    position.x = window.innerWidth / 2
-    position.y = window.innerHeight / 2
+  const init = ({ x, y }) => {
+    position.x = x
+    position.y = y
 
     calculateGrid()
   }

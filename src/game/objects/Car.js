@@ -160,22 +160,6 @@ export const Car = ({ canvas, controls }) => {
 
     position.movingX = positionX
     position.movingY = positionY
-
-    // if (position.speed <= 3) {
-    //   position.movingX = positionX
-    //   position.movingY = positionY
-    // } else if (position.speed > 4 && position.speed <= maxSpeed) {
-    //   position.movingX += positionX
-    //   position.movingY += positionY
-    // } else {
-    //   position.movingX = position.movingX
-    //   position.movingY = position.movingY
-    // }
-
-    console.log({
-      speed: position.speed,
-      movingX: position.movingX,
-    })
   }
 
   const calculatePosition = () => {
