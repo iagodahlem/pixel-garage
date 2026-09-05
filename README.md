@@ -1,37 +1,26 @@
-# game
+# Pixel Garage
 
-🕹️ Little fun game.
+This is a small canvas playground I built in 2023, with two pixel-art vehicles, a spaceship and a car, drawn pixel by pixel on a grid.
 
-## Requirements
+Live at [pixel-garage.iagodahlem.com](https://pixel-garage.iagodahlem.com).
 
-- Node v17.4.0
-- Yarn v1.22.17
+## Controls
 
-## Install
+Arrows or WASD move the current vehicle. Up thrusts the ship or throttles the car. Down brakes and then reverses the car. Left and right rotate the ship or steer the car. 1 and 2 switch vehicles, and so do the buttons in the corner of the screen. You can also load a vehicle directly with `?level=car` or `?level=spaceship` in the URL.
 
-First install all the dependencies:
-
-```sh
-yarn install
-```
-
-## Usage
-
-Then, run the development server:
+## Run
 
 ```sh
-yarn start
+pnpm install
+pnpm dev
+pnpm build
 ```
 
-Open http://localhost:1234 with your browser to see the result.
+Needs Node 22 or newer.
 
-## Contributing
+## Deploy
 
-1. Fork it!
-2. Create your feature branch: `git checkout -b my-new-feature`
-3. Commit your changes: `git commit -m 'Add some feature'`
-4. Push to the branch: `git push origin my-new-feature`
-5. Submit a pull request :D
+Deployed on Netlify from `main` to [pixel-garage.iagodahlem.com](https://pixel-garage.iagodahlem.com).
 
 ## License
 
