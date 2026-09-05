@@ -20,6 +20,6 @@ Needs Node 22 or newer.
 
 The site is deployed on Netlify from `main`.
 
-## Licence
+## License
 
 MIT
