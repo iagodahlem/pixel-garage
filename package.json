@@ -1,4 +1,5 @@
 {
+  "name": "pixel-garage",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@9.7.0",
